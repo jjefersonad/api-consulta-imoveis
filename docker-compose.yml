@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  app:
+    container_name: dashboard-api
+    build: ./
+    command: flask run --host=0.0.0.0
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://conexao:conexao@dashboard-db:5432/dashboard
+    depends_on:
+      - dashboard-db
+    volumes:
+      - .:/app
+
+  dashboard-db:
+    container_name: dashboard-db
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=conexao
+      - POSTGRES_PASSWORD=conexao
+      - POSTGRES_DB=dashboard
+    user: postgres
+    command: >
+      bash -c "
+      echo \"listen_addresses = '*'\" >> /var/lib/postgresql/data/postgresql.conf &&
+      echo \"host all all 0.0.0.0/0 md5\" >> /var/lib/postgresql/data/pg_hba.conf &&
+      postgres"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: dashboard-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@email.com"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
+    volumes:
+      - "./docker/dbdata:/var/lib/pgadmin/storage"
+    ports:
+      - "14321:80"
+    depends_on:
+      - dashboard-db
+
+volumes:
+  db-data:
