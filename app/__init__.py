@@ -2,7 +2,7 @@ import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from app.infra.config import DevelopmentConfig
+from app.infra.config.config import DevelopmentConfig
 from app.interfaces.api.routes import setup_routes
 
 # Configuração do logger

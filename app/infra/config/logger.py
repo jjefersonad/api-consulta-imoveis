@@ -1,7 +1,6 @@
 import logging
 
-class Logger(object):
-
+class Logger:
     def __init__(self) -> None:
       logging.basicConfig(level=logging.INFO)
       self.logger = logging.getLogger(__name__)
