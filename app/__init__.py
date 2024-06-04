@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from app.infra.config.config import DevelopmentConfig
 from app.interfaces.api.routes import setup_routes
+from flask_cors import CORS
 
 # Configuração do logger
 logging.basicConfig(level=logging.INFO)
@@ -18,6 +19,7 @@ from app.core.entities import *
 def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    CORS(app)
 
     # Verificar se a conexão com o banco de dados foi estabelecida
     with app.app_context():
